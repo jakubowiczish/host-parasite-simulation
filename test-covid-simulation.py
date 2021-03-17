@@ -59,11 +59,14 @@ class Host:
     def eat(self, space, arbiter, data):
         food = data['food']
         foods = data['foods']
-        foods.remove(food)
+        if food in foods:
+            foods.remove(food)
         return False
 
     def find_nearest_food(self, foods):
         vector_to_food = random.uniform(-100, 100), random.uniform(-100, 100)
+        if not foods:
+            return vector_to_food
         min_length = 10000000
         speed = 80
         for food in foods:
