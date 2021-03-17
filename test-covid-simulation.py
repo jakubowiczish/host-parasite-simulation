@@ -1,6 +1,7 @@
 import pygame
 import random
 import pymunk
+import numpy as np
 
 pygame.init()
 
@@ -12,13 +13,14 @@ clock = pygame.time.Clock()
 FPS = 90
 space = pymunk.Space()
 
-population = 300
+population = 2
+food_init_number = 20
 
 recovery_time = 300  # dependent on fps
 
 
-class Ball:
-    def __init__(self, x, y):
+class Host:
+    def __init__(self, x, y, i):
         self.x = x
         self.y = y
         self.body = pymunk.Body()
@@ -27,6 +29,7 @@ class Ball:
         self.shape = pymunk.Circle(self.body, 10)
         self.shape.density = 1
         self.shape.elasticity = 1
+        self.shape.collision_type = i
         self.infected_time = 0
         self.infected = False
         self.recovered = False
@@ -53,6 +56,23 @@ class Ball:
         self.infected = True
         self.shape.collision_type = population + 1
 
+    def eat(self, space, arbiter, data):
+        food = data['food']
+        foods = data['foods']
+        foods.remove(food)
+        return False
+
+    def find_nearest_food(self, foods):
+        vector_to_food = random.uniform(-100, 100), random.uniform(-100, 100)
+        min_length = 10000000
+        for food in foods:
+            vector = np.array([food.x - self.x, food.y - self.y])
+            length = np.linalg.norm(vector)
+            if length < min_length:
+                min_length = length
+                vector_to_food = vector.tolist()
+        self.body.velocity = vector_to_food
+
 
 class Wall:
     def __init__(self, p1, p2):
@@ -62,14 +82,35 @@ class Wall:
         space.add(self.shape, self.body)
 
 
-def game():
-    balls = [Ball(random.randint(0, size_x), random.randint(0, size_y)) for _ in range(population)]
-    for i in range(1, population + 1):
-        balls[i - 1].shape.collision_type = i
-        handler = space.add_collision_handler(i, population + 1)
-        handler.separate = balls[i - 1].infect
+class Food:
+    def __init__(self, x, y, i):
+        self.x = x
+        self.y = y
+        self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
+        self.body.position = x, y
+        self.shape = pymunk.Circle(self.body, 5)
+        self.shape.density = 1
+        self.shape.elasticity = 1
+        self.shape.collision_type = i
+        space.add(self.body, self.shape)
 
-    random.choice(balls).infect()
+    def draw(self):
+        x, y = self.body.position
+        pygame.draw.circle(display, (0, 255, 255), (int(x), int(y)), 10)
+
+
+def game():
+    balls = [Host(random.randint(0, size_x), random.randint(0, size_y), i + 1) for i in range(population)]
+    foods = [Food(random.randint(0, size_x), random.randint(0, size_y), i + 1) for i in
+             range(population, population + food_init_number)]
+    for ball in balls:
+        for food in foods:
+            handler = space.add_collision_handler(ball.shape.collision_type, food.shape.collision_type)
+            handler.data['food'] = food
+            handler.data['foods'] = foods
+            handler.begin = ball.eat
+
+
     walls = [Wall((0, 0), (0, size_y)),
              Wall((0, 0), (size_x, 0)),
              Wall((0, size_y), (size_x, size_y)),
@@ -82,13 +123,18 @@ def game():
 
         display.fill((0, 0, 0))
         for ball in balls:
+            ball.find_nearest_food(foods)
+            print(len(foods))
             ball.draw()
             ball.pass_time()
+        for food in foods:
+            food.draw()
 
         pygame.display.update()
         clock.tick(FPS)
         space.step(1 / FPS)
 
 
-game()
-pygame.quit()
+if __name__ == '__main__':
+    game()
+    pygame.quit()
