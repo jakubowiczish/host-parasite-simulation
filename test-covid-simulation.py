@@ -65,12 +65,15 @@ class Host:
     def find_nearest_food(self, foods):
         vector_to_food = random.uniform(-100, 100), random.uniform(-100, 100)
         min_length = 10000000
+        speed = 80
         for food in foods:
-            vector = np.array([food.x - self.x, food.y - self.y])
+            vector = np.array([food.x - self.body.position.x, food.y - self.body.position.y])
             length = np.linalg.norm(vector)
             if length < min_length:
                 min_length = length
-                vector_to_food = vector.tolist()
+                versor = speed * vector / length
+                vector_to_food = versor.tolist()
+
         self.body.velocity = vector_to_food
 
 
@@ -103,13 +106,13 @@ def game():
     balls = [Host(random.randint(0, size_x), random.randint(0, size_y), i + 1) for i in range(population)]
     foods = [Food(random.randint(0, size_x), random.randint(0, size_y), i + 1) for i in
              range(population, population + food_init_number)]
+
     for ball in balls:
         for food in foods:
             handler = space.add_collision_handler(ball.shape.collision_type, food.shape.collision_type)
             handler.data['food'] = food
             handler.data['foods'] = foods
             handler.begin = ball.eat
-
 
     walls = [Wall((0, 0), (0, size_y)),
              Wall((0, 0), (size_x, 0)),
@@ -124,7 +127,6 @@ def game():
         display.fill((0, 0, 0))
         for ball in balls:
             ball.find_nearest_food(foods)
-            print(len(foods))
             ball.draw()
             ball.pass_time()
         for food in foods:
