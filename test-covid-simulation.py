@@ -5,10 +5,10 @@ import numpy as np
 
 pygame.init()
 
-size_x = 800
-size_y = 800
+board_size_x = 800
+board_size_y = 800
 
-display = pygame.display.set_mode((size_x, size_y))
+display = pygame.display.set_mode((board_size_x, board_size_y))
 clock = pygame.time.Clock()
 FPS = 90
 space = pymunk.Space()
@@ -107,20 +107,20 @@ class Food:
 
 
 def game():
-    balls = [Host(random.randint(0, size_x), random.randint(0, size_y), i + 1) for i in range(population)]
-    foods = [Food(random.randint(0, size_x), random.randint(0, size_y), i + 1) for i in
+    hosts = [Host(random.randint(0, board_size_x), random.randint(0, board_size_y), i + 1) for i in range(population)]
+    foods = [Food(random.randint(0, board_size_x), random.randint(0, board_size_y), i + 1) for i in
              range(population, population + food_init_number)]
-    for ball in balls:
+    for host in hosts:
         for food in foods:
-            handler = space.add_collision_handler(ball.shape.collision_type, food.shape.collision_type)
+            handler = space.add_collision_handler(host.shape.collision_type, food.shape.collision_type)
             handler.data['food'] = food
             handler.data['foods'] = foods
-            handler.begin = ball.eat
+            handler.begin = host.eat
 
-    walls = [Wall((0, 0), (0, size_y)),
-             Wall((0, 0), (size_x, 0)),
-             Wall((0, size_y), (size_x, size_y)),
-             Wall((size_x, 0), (size_x, size_y))
+    walls = [Wall((0, 0), (0, board_size_y)),
+             Wall((0, 0), (board_size_x, 0)),
+             Wall((0, board_size_y), (board_size_x, board_size_y)),
+             Wall((board_size_x, 0), (board_size_x, board_size_y))
              ]
     while True:
         for event in pygame.event.get():
@@ -128,10 +128,10 @@ def game():
                 return
 
         display.fill((0, 0, 0))
-        for ball in balls:
-            ball.find_nearest_food(foods)
-            ball.draw()
-            ball.pass_time()
+        for host in hosts:
+            host.find_nearest_food(foods)
+            host.draw()
+            host.pass_time()
         for food in foods:
             food.draw()
 
