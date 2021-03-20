@@ -1,11 +1,11 @@
-size_x = 1600
-size_y = 800
-board_size_x = 800
-board_size_y = 800
+WINDOW_SIZE_X = 1600
+WINDOW_SIZE_Y = 800
+SIM_BOARD_SIZE_X = 800
+SIM_BOARD_SIZE_Y = 800
 
 FPS = 90
 
-population = 2
-food_init_number = 20
-DIE_TYPE_COLLISION = population + food_init_number + 10
-recovery_time = 300  # dependent on fps
+POPULATION = 2
+FOOD_INIT_NUMBER = 20
+DIE_TYPE_COLLISION = POPULATION + FOOD_INIT_NUMBER + 10
+RECOVERY_TIME = 300  # dependent on fps

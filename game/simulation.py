@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from game.constants import board_size_x, board_size_y, population, food_init_number, FPS
+from game.constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, POPULATION, FOOD_INIT_NUMBER, FPS
 from game.food import Food
 from game.host import Host
 from game.wall import Wall
@@ -10,22 +10,23 @@ from game.wall import Wall
 
 class Simulation:
 
-    def __init__(self, sim_space, sim_display, sim_clock):
-        self.clock = sim_clock
-        self.space = sim_space
-        self.display = sim_display
+    def __init__(self, space, display, clock):
+        self.clock = clock
+        self.space = space
+        self.display = display
 
-        self.hosts = [Host(self.space, self.display, random.randint(0, board_size_x), random.randint(0, board_size_y), i + 1)
-                      for i in range(population)]
+        self.hosts = [Host(self.space, self.display, random.randint(0, SIM_BOARD_SIZE_X), random.randint(0, SIM_BOARD_SIZE_Y), i + 1)
+                      for i in range(POPULATION)]
 
-        self.foods = [Food(self.space, self.display, random.randint(0, board_size_x), random.randint(0, board_size_y), i + 1)
-                      for i in range(population, population + food_init_number)]
+        self.foods = [Food(self.space, self.display, random.randint(0, SIM_BOARD_SIZE_X), random.randint(0, SIM_BOARD_SIZE_Y), i + 1)
+                      for i in range(POPULATION, POPULATION + FOOD_INIT_NUMBER)]
 
-        self.walls = [Wall(self.space, (0, 0), (0, board_size_y)),
-                      Wall(self.space, (0, 0), (board_size_x, 0)),
-                      Wall(self.space, (0, board_size_y), (board_size_x, board_size_y)),
-                      Wall(self.space, (board_size_x, 0), (board_size_x, board_size_y))
-                      ]
+        self.walls = [
+            Wall(self.space, (0, 0), (0, SIM_BOARD_SIZE_Y)),
+            Wall(self.space, (0, 0), (SIM_BOARD_SIZE_X, 0)),
+            Wall(self.space, (0, SIM_BOARD_SIZE_Y), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y)),
+            Wall(self.space, (SIM_BOARD_SIZE_X, 0), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y))
+        ]
 
     def run_simulation(self):
         for host in self.hosts:
