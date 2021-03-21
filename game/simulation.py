@@ -5,6 +5,7 @@ from game.constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, POPULATION, FOOD_
 from game.food import Food
 from game.food_spawn import FoodSpawn
 from game.host import Host
+from game.host_multiplayer import HostMultiplayer
 from game.parasite import Parasite
 from game.wall import Wall
 
@@ -16,14 +17,18 @@ class Simulation:
         self.space = space
         self.display = display
         self.display_front = display_front
+        self.host_multiply = HostMultiplayer(display, display_front, space, None, None)
         self.hosts = [
-            Host(self.space, self.display, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None)
+            Host(self.space, self.display, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None,
+                 self.host_multiply)
             for i in range(POPULATION)]
         for host in self.hosts:
             host.hosts = self.hosts
         self.foods = [
             Food(self.space, self.display, self.display_front, random_x_in_board(), random_y_in_board(), i + 1)
             for i in range(POPULATION, POPULATION + FOOD_INIT_NUMBER)]
+        self.host_multiply.hosts = self.hosts
+        self.host_multiply.foods = self.foods
         self.spawn_food = FoodSpawn(display, display_front, space, self.foods, self.hosts)
         self.hosts[0].catch_parasite()
         self.walls = [
@@ -48,7 +53,6 @@ class Simulation:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
-
             self.display.fill((0, 0, 0))
             self.display_front.fill((0, 0, 0))
             self.display_front.set_alpha(128)

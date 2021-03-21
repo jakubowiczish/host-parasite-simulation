@@ -9,12 +9,13 @@ from game.constants import DIE_TYPE_COLLISION, get_per_second, increment_handler
 
 
 class Host(AbstractInfected):
-    def __init__(self, space, display,display_front, x, y, i, hosts):
+    def __init__(self, space, display, display_front, x, y, i, hosts, host_multiply):
         super().__init__(space, display, display_front, x, y, i, pymunk.Body(), 10, (255, 255, 255))
         self.hosts = hosts
         self.speed = 80
         self.visual_range = 50
         self.random_move()
+        self.host_multiply = host_multiply
 
     def pass_time(self):
         if self.health > 0:
@@ -34,10 +35,7 @@ class Host(AbstractInfected):
         self.color = (255, 0, 0)
 
     def multiply(self):
-        offset = 5
-        new_host = Host(self.space, self.display,self.display_front, self.body.position.x + offset, self.body.position.y + offset,
-                        increment_handlers(), self.hosts)
-        self.hosts.append(new_host)
+        self.host_multiply.multiply_host(self)
 
     def eat(self, space, arbiter, data):
         food = data['food']
@@ -71,4 +69,4 @@ class Host(AbstractInfected):
     def draw(self):
         super().draw()
         x, y = self.body.position
-        pygame.draw.circle(self.display_front, (255,255,255), (int(x), int(y)), self.visual_range)
+        pygame.draw.circle(self.display_front, (255, 255, 255), (int(x), int(y)), self.visual_range)
