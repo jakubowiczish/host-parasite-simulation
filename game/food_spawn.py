@@ -1,5 +1,7 @@
+import random
+
 from game.constants import increment_handlers, random_x_in_board, random_y_in_board, FOOD_SPAWN_INTERVAL, \
-    get_time_in_seconds, MAX_FOOD
+    get_time_in_seconds, MAX_FOOD, INFECTED_FOOD_CHANCE
 from game.food import Food
 
 
@@ -28,3 +30,5 @@ class FoodSpawn:
             handler.data['food'] = random_food
             handler.data['foods'] = self.foods
             handler.begin = host.eat
+        if random.random() < INFECTED_FOOD_CHANCE:
+            random_food.catch_parasite()

@@ -41,6 +41,8 @@ class Host(AbstractInfected):
         if food in foods:
             foods.remove(food)
             self.health += food.nutrition
+            if food.parasite:
+                self.catch_parasite()
         return False
 
     def random_move(self):

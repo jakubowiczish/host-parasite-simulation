@@ -22,7 +22,7 @@ class Simulation:
         self.foods = [Food(self.space, self.display, random_x_in_board(), random_y_in_board(), i + 1)
                       for i in range(POPULATION, POPULATION + FOOD_INIT_NUMBER)]
         self.spawn_food = FoodSpawn(display, space, self.foods, self.hosts)
-        self.hosts[0].catch_parasite(Parasite())
+        self.hosts[0].catch_parasite()
         self.walls = [
             Wall(self.space, (0, 0), (0, SIM_BOARD_SIZE_Y)),
             Wall(self.space, (0, 0), (SIM_BOARD_SIZE_X, 0)),
