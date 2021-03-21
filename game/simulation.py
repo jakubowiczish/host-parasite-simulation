@@ -15,9 +15,10 @@ class Simulation:
         self.clock = clock
         self.space = space
         self.display = display
-        self.hosts = [Host(self.space, self.display, random_x_in_board(), random_y_in_board(), i + 1)
+        self.hosts = [Host(self.space, self.display, random_x_in_board(), random_y_in_board(), i + 1,None)
                       for i in range(POPULATION)]
-
+        for host in self.hosts:
+            host.hosts = self.hosts
         self.foods = [Food(self.space, self.display, random_x_in_board(), random_y_in_board(), i + 1)
                       for i in range(POPULATION, POPULATION + FOOD_INIT_NUMBER)]
         self.spawn_food = FoodSpawn(display, space, self.foods, self.hosts)

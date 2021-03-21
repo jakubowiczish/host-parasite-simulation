@@ -3,11 +3,11 @@ import pymunk
 
 
 class AbstractInfected(object):
-    def __init__(self, space, display, x, y, i, size, color):
+    def __init__(self, space, display, x, y, i, body, size, color):
         self.display = display
         self.x = x
         self.y = y
-        self.body = pymunk.Body()
+        self.body = body
         self.body.position = x, y
         self.shape = pymunk.Circle(self.body, size)
         self.shape.density = 1
@@ -16,6 +16,7 @@ class AbstractInfected(object):
         self.health = 100
         self.parasite = None
         self.color = color
+        self.space = space
         space.add(self.body, self.shape)
 
     def draw(self):
