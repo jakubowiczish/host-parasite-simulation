@@ -22,25 +22,30 @@ class Host:
         self.infected = False
         self.recovered = False
         self.health = 100
+        self.parasite = None
+        self.color = (255, 255, 255)
         space.add(self.body, self.shape)
 
+    def catch_parasite(self, parasite):
+        self.color = (0, 255, 0)
+        self.parasite = parasite
+
     def pass_time(self):
-        print(self.health)
         if self.health > 0:
             self.health -= 1 / FPS
         else:
             self.shape.collision_type = DIE_TYPE_COLLISION
             self.die()
+        if self.parasite:
+            self.health -= self.parasite.needs / FPS
 
     def die(self):
         self.body.velocity = 0, 0
+        self.color = (255, 0, 0)
 
     def draw(self):
         x, y = self.body.position
-        if self.health == 0:
-            pygame.draw.circle(self.display, (255, 0, 0), (int(x), int(y)), 10)
-        else:
-            pygame.draw.circle(self.display, (255, 255, 255), (int(x), int(y)), 10)
+        pygame.draw.circle(self.display, self.color, (int(x), int(y)), 10)
 
     def eat(self, space, arbiter, data):
         food = data['food']
