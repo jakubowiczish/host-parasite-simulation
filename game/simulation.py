@@ -1,7 +1,7 @@
 import pygame
 
 from game.constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, POPULATION, FOOD_INIT_NUMBER, FPS, random_x_in_board, \
-    random_y_in_board, ALL_HANDLERS, increment_handlers
+    random_y_in_board, ALL_HANDLERS, increment_handlers, get_per_second
 from game.food import Food
 from game.food_spawn import FoodSpawn
 from game.host import Host
@@ -55,4 +55,4 @@ class Simulation:
             self.pass_time()
             pygame.display.update()
             self.clock.tick(FPS)
-            self.space.step(1 / FPS)
+            self.space.step(get_per_second())

@@ -3,7 +3,7 @@ import pygame
 import pymunk
 import random
 
-from game.constants import DIE_TYPE_COLLISION, FPS
+from game.constants import DIE_TYPE_COLLISION, FPS, get_per_second
 
 
 class Host:
@@ -32,12 +32,12 @@ class Host:
 
     def pass_time(self):
         if self.health > 0:
-            self.health -= 1 / FPS
+            self.health -= get_per_second()
         else:
             self.shape.collision_type = DIE_TYPE_COLLISION
             self.die()
         if self.parasite:
-            self.health -= self.parasite.needs / FPS
+            self.health -= self.parasite.needs * get_per_second()
 
     def die(self):
         self.body.velocity = 0, 0

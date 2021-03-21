@@ -1,12 +1,15 @@
 import pygame
 
-from game.constants import increment_handlers, random_x_in_board, random_y_in_board, FOOD_SPAWN_INTERVAL
+from game.constants import increment_handlers, random_x_in_board, random_y_in_board, FOOD_SPAWN_INTERVAL, \
+    get_time_in_seconds
 from game.food import Food
+
+
 
 
 class FoodSpawn:
     def __init__(self, display, space, foods, hosts):
-        self.last = pygame.time.get_ticks()
+        self.last = get_time_in_seconds()
         self.cool_down = FOOD_SPAWN_INTERVAL
         self.display = display
         self.space = space
@@ -15,7 +18,7 @@ class FoodSpawn:
 
     def spawn_food_random(self):
         if len(self.foods) < 2:
-            now = pygame.time.get_ticks()
+            now = get_time_in_seconds()
             if now - self.last >= self.cool_down:
                 self.last = now
                 self.spawn_food(random_x_in_board(), random_y_in_board())
