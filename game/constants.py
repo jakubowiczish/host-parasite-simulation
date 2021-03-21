@@ -1,5 +1,4 @@
 import random
-
 import pygame
 
 WINDOW_SIZE_X = 1600

@@ -1,6 +1,3 @@
-import pygame
-import pymunk
-
 from game.abstract_infected import AbstractInfected
 
 

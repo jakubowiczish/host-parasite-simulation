@@ -1,6 +1,4 @@
 import numpy as np
-import pygame
-import pymunk
 import random
 
 from game.abstract_infected import AbstractInfected

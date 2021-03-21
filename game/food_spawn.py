@@ -1,10 +1,6 @@
-import pygame
-
 from game.constants import increment_handlers, random_x_in_board, random_y_in_board, FOOD_SPAWN_INTERVAL, \
     get_time_in_seconds
 from game.food import Food
-
-
 
 
 class FoodSpawn:
