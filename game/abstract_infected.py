@@ -5,8 +5,9 @@ from game.parasite import Parasite
 
 
 class AbstractInfected(object):
-    def __init__(self, space, display, x, y, i, body, size, color):
+    def __init__(self, space, display, display_front, x, y, i, body, size, color):
         self.display = display
+        self.display_front = display_front
         self.x = x
         self.y = y
         self.body = body

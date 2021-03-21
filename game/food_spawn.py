@@ -6,10 +6,11 @@ from game.food import Food
 
 
 class FoodSpawn:
-    def __init__(self, display, space, foods, hosts):
+    def __init__(self, display,display_front, space, foods, hosts):
         self.last = get_time_in_seconds()
         self.cool_down = FOOD_SPAWN_INTERVAL
         self.display = display
+        self.display_front = display_front
         self.space = space
         self.foods = foods
         self.hosts = hosts
@@ -23,7 +24,7 @@ class FoodSpawn:
 
     def spawn_food(self, x, y):
         handler_index = increment_handlers()
-        random_food = Food(self.space, self.display, x, y, handler_index)
+        random_food = Food(self.space, self.display,self.display_front, x, y, handler_index)
         self.foods.append(random_food)
         for host in self.hosts:
             handler = self.space.add_collision_handler(host.shape.collision_type, random_food.shape.collision_type)
