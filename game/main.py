@@ -1,11 +1,14 @@
 import pygame
 import pymunk
+import pygame.freetype
 
 from game.constants import WINDOW_SIZE_X, WINDOW_SIZE_Y
 from game.simulation import Simulation
 
 if __name__ == '__main__':
     pygame.init()
+    pygame.font.init()
+    pygame.freetype.init()
 
     _display = pygame.display.set_mode((WINDOW_SIZE_X, WINDOW_SIZE_Y))
     _clock = pygame.time.Clock()

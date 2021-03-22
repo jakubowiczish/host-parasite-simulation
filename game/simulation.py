@@ -7,6 +7,7 @@ from game.food_spawn import FoodSpawn
 from game.host import Host
 from game.host_multiplayer import HostMultiplayer
 from game.parasite import Parasite
+from game.stats import Stats
 from game.wall import Wall
 
 
@@ -37,6 +38,7 @@ class Simulation:
             Wall(self.space, (0, SIM_BOARD_SIZE_Y), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y)),
             Wall(self.space, (SIM_BOARD_SIZE_X, 0), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y))
         ]
+        self.stats = Stats(display)
 
     def pass_time(self):
         self.spawn_food.spawn_food_random()
@@ -65,6 +67,8 @@ class Simulation:
                 food.draw()
             self.pass_time()
             self.display.blit(self.display_front, (0, 0))
+            # self.stats.print_stats('Statistics')
+            self.stats.print_stats(f"There is {len(self.foods)} food ")
             pygame.display.update()
             self.clock.tick(FPS)
             self.space.step(get_per_second())
