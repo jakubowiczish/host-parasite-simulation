@@ -1,0 +1,8 @@
+[window]
+width = 1600
+height = 800
+background_color = [0, 0, 32]
+window_title = "Host Parasite Simulation"
+
+[input]
+controls = "keyboard"
