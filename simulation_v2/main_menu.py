@@ -1,17 +1,17 @@
 from typing import Callable
 
 from config import config
-from ctx import ctx
 from device import Device
-from prompter import Prompter
 from input import Input
+from prompter import Prompter
+from simulation_v2.simulation import Simulation
 from state import State
 from text import Text
 
 
 class MainMenu(State):
     def __init__(self) -> None:
-        self.input = Input(Device(config.device1))
+        self.input = Input(Device(config.device))
         self.position = 0
         self.min_position = 0
         self.max_position = 3
@@ -21,7 +21,7 @@ class MainMenu(State):
         return False
 
     def initialize(self) -> None:
-        ctx.mixer.play_music("menu_theme")
+        # ctx.mixer.play_music("menu_theme")
         binds = {
             "down": self.position_down,
             "up": self.position_up,
@@ -34,18 +34,18 @@ class MainMenu(State):
         self.position += 1
         if self.position > self.max_position:
             self.position = self.max_position
-        else:
-            ctx.mixer.play("change")
+        # else:
+            # ctx.mixer.play("change")
 
     def position_up(self) -> None:
         self.position -= 1
         if self.position < self.min_position:
             self.position = self.min_position
-        else:
-            ctx.mixer.play("change")
+        # else:
+        #     ctx.mixer.play("change")
 
     def position_enter(self) -> None:
-        ctx.mixer.play("choose")
+        # ctx.mixer.play("choose")
         self.entered = True
 
     def update(self, switch_state: Callable) -> None:
@@ -53,10 +53,10 @@ class MainMenu(State):
 
         if self.entered:
             if self.position == 0:
-                switch_state(Prompter(Simulation(), 1))
+                switch_state(Prompter(Simulation()))
 
     def draw(self) -> None:
-        Text.draw("Host Parasite Simulation", centerx=640, top=30, size=10)
+        Text.draw("Host Parasite Simulation", centerx=640, top=30, size=3)
 
         colors = ["white" for _ in range(self.max_position + 1)]
         colors[self.position] = "gold"

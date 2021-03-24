@@ -20,7 +20,7 @@ class Text:
              ) -> Tuple[pg.Surface, Position]:
         return ptext.draw(
             *args,
-            fontname="",  # TODO
+            fontname="simulation",  # TODO
             fontsize=8 * size,
             color=pg.Color(color),
             gcolor=pg.Color(gcolor),

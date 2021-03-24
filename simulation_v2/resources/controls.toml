@@ -1,0 +1,6 @@
+[keyboard]
+type = "keyboard"
+cancel = "esc"
+select = "enter"
+up = "up"
+down = "down"
