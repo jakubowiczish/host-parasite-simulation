@@ -69,8 +69,8 @@ class Main:
             pg.transform.scale(
                 ctx.surface, self.display.get_size(), self.display
             )
-            pg.display.flip()
-            fps_clock.tick(60)
+            pg.display.update()
+            fps_clock.tick(90)
 
 
 if __name__ == '__main__':

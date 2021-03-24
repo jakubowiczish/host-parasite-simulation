@@ -14,7 +14,7 @@ class MainMenu(State):
         self.input = Input(Device(config.device))
         self.position = 0
         self.min_position = 0
-        self.max_position = 3
+        self.max_position = 1
         self.entered = False
 
     def is_finished(self) -> bool:
@@ -26,7 +26,6 @@ class MainMenu(State):
             "down": self.position_down,
             "up": self.position_up,
             "select": self.position_enter,
-            "hard_fall": self.position_enter,
         }
         self.input.bind(binds)
 

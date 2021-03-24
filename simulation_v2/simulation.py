@@ -87,7 +87,6 @@ class Simulation(State):
             food.draw()
         self.pass_time()
         self.display.blit(self.display_front, (0, 0))
-        # self.stats.print_stats('Statistics')
         self.stats.print_stats(f"There is {len(self.foods)} food ")
         pg.display.update()
         self.clock.tick(FPS)
