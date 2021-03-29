@@ -1,12 +1,12 @@
 import pygame
 import pymunk
 
-from game.parasite import Parasite
+from parasite import Parasite
+from ctx import ctx
 
 
 class AbstractInfected(object):
-    def __init__(self, space, display, display_front, x, y, i, body, size, color):
-        self.display = display
+    def __init__(self, space, display_front, x, y, i, body, size, color):
         self.display_front = display_front
         self.x = x
         self.y = y
@@ -24,7 +24,7 @@ class AbstractInfected(object):
 
     def draw(self):
         x, y = self.body.position
-        pygame.draw.circle(self.display, self.color, (int(x), int(y)), 10)
+        pygame.draw.circle(ctx.display, self.color, (int(x), int(y)), 10)
 
     def catch_parasite(self):
         self.color = (self.color[0], self.color[1], 100)

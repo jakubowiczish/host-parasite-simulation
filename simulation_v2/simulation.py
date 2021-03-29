@@ -3,11 +3,11 @@ from typing import Callable
 import pygame as pg
 
 from config import config
+from constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, POPULATION, FOOD_INIT_NUMBER, random_x_in_board, \
+    random_y_in_board, get_per_second
 from ctx import ctx
 from food import Food
 from food_spawn import FoodSpawn
-from game.constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, POPULATION, FOOD_INIT_NUMBER, FPS, random_x_in_board, \
-    random_y_in_board, get_per_second
 from host import Host
 from host_multiplayer import HostMultiplayer
 from state import State
@@ -18,24 +18,24 @@ from wall import Wall
 class Simulation(State):
 
     def __init__(self):
-        self.display = ctx.display
         pg.display.set_caption(config.window_title)
-        self.clock = ctx.clock
         self.space = ctx.space
         self.display_front = ctx.surface
-        self.host_multiply = HostMultiplayer(self.display, self.display_front, self.space, None, None)
+        self.host_multiply = HostMultiplayer(self.display_front, self.space, None, None)
         self.hosts = [
-            Host(self.space, self.display, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None,
-                 self.host_multiply)
-            for i in range(POPULATION)]
+            Host(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None, self.host_multiply)
+            for i in range(POPULATION)
+        ]
         for host in self.hosts:
             host.hosts = self.hosts
         self.foods = [
-            Food(self.space, self.display, self.display_front, random_x_in_board(), random_y_in_board(), i + 1)
-            for i in range(POPULATION, POPULATION + FOOD_INIT_NUMBER)]
+            Food(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1)
+            for i in range(POPULATION, POPULATION + FOOD_INIT_NUMBER)
+        ]
+
         self.host_multiply.hosts = self.hosts
         self.host_multiply.foods = self.foods
-        self.spawn_food = FoodSpawn(self.display, self.display_front, self.space, self.foods, self.hosts)
+        self.spawn_food = FoodSpawn(self.display_front, self.space, self.foods, self.hosts)
         self.hosts[0].catch_parasite()
         self.walls = [
             Wall(self.space, (0, 0), (0, SIM_BOARD_SIZE_Y)),
@@ -43,7 +43,7 @@ class Simulation(State):
             Wall(self.space, (0, SIM_BOARD_SIZE_Y), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y)),
             Wall(self.space, (SIM_BOARD_SIZE_X, 0), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y))
         ]
-        self.stats = Stats(self.display)
+        self.stats = Stats()
 
         self.finished = False
         self.pause = False
@@ -75,7 +75,7 @@ class Simulation(State):
         self.spawn_food.spawn_food_random()
 
     def update(self, switch_state: Callable) -> None:
-        self.display.fill((0, 0, 0))
+        ctx.surface.fill((0, 0, 0))
         self.display_front.fill((0, 0, 0))
         self.display_front.set_alpha(128)
 
@@ -86,8 +86,9 @@ class Simulation(State):
         for food in self.foods:
             food.draw()
         self.pass_time()
-        self.display.blit(self.display_front, (0, 0))
+        ctx.display.blit(self.display_front, (0, 0))
         self.stats.print_stats(f"There is {len(self.foods)} food ")
-        pg.display.update()
-        self.clock.tick(FPS)
+        # pg.display.update()
+        # ctx.surface.update()
+        # self.clock.tick(FPS)
         self.space.step(get_per_second())

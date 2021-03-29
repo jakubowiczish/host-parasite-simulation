@@ -4,7 +4,7 @@ from config import config
 from device import Device
 from input import Input
 from prompter import Prompter
-from simulation_v2.simulation import Simulation
+from simulation import Simulation
 from state import State
 from text import Text
 
