@@ -1,16 +1,16 @@
-import numpy as np
 import random
 
+import numpy as np
 import pygame
 import pymunk
 
-from game.abstract_infected import AbstractInfected
-from game.constants import DIE_TYPE_COLLISION, get_per_second, increment_handlers, MULTIPLICATION_THRESHOLD
+from abstract_infected import AbstractInfected
+from constants import DIE_TYPE_COLLISION, get_per_second, MULTIPLICATION_THRESHOLD
 
 
 class Host(AbstractInfected):
-    def __init__(self, space, display, display_front, x, y, i, hosts, host_multiply):
-        super().__init__(space, display, display_front, x, y, i, pymunk.Body(), 10, (255, 255, 255))
+    def __init__(self, space, display_front, x, y, i, hosts, host_multiply):
+        super().__init__(space, display_front, x, y, i, pymunk.Body(), 10, (255, 255, 255))
         self.hosts = hosts
         self.speed = 80
         self.visual_range = 50

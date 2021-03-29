@@ -41,7 +41,6 @@ class Main:
         pg.freetype.init()
 
         ctx.surface = pg.Surface(config.window_size, pg.SRCALPHA)
-        ctx.clock = pg.time.Clock()
         ctx.space = pm.Space()
 
         self.display = pg.display.set_mode(config.window_size)
@@ -58,6 +57,7 @@ class Main:
 
             ctx.now = time.monotonic()
             self.state.update(self.switch_state)
+            pg.display.update()
 
             if self.state.is_finished():
                 self.switch_state(MainMenu())
@@ -66,11 +66,8 @@ class Main:
             self.state.draw()
             self.draw_fps(fps_clock)
 
-            pg.transform.scale(
-                ctx.surface, self.display.get_size(), self.display
-            )
-            pg.display.update()
-            fps_clock.tick(90)
+            pg.transform.scale(ctx.surface, self.display.get_size(), self.display)
+            fps_clock.tick(120)
 
 
 if __name__ == '__main__':
