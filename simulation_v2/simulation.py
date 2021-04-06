@@ -17,20 +17,20 @@ from wall import Wall
 
 class Simulation(State):
 
-    def __init__(self):
+    def __init__(self, population, food_amount):
         pg.display.set_caption(config.window_title)
         self.space = ctx.space
         self.display_front = ctx.surface
         self.host_multiply = HostMultiplayer(self.display_front, self.space, None, None)
         self.hosts = [
             Host(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None, self.host_multiply)
-            for i in range(POPULATION)
+            for i in range(population)
         ]
         for host in self.hosts:
             host.hosts = self.hosts
         self.foods = [
             Food(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1)
-            for i in range(POPULATION, POPULATION + FOOD_INIT_NUMBER)
+            for i in range(population, population + food_amount)
         ]
 
         self.host_multiply.hosts = self.hosts

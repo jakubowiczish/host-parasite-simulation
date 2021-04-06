@@ -9,6 +9,10 @@ class Context:
         self.surface: pg.surface.Surface
         self.space: pm.Space
         self.display: pg.display
+        self.population: int
+        self.food_amount: int
 
 
 ctx = Context()
+ctx.population = 2
+ctx.food_amount = 40
