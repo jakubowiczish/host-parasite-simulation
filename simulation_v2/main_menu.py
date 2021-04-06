@@ -3,8 +3,7 @@ from typing import Callable
 from config import config
 from device import Device
 from input import Input
-from prompter import Prompter
-from simulation import Simulation
+from settings import Settings
 from state import State
 from text import Text
 
@@ -14,7 +13,7 @@ class MainMenu(State):
         self.input = Input(Device(config.device))
         self.position = 0
         self.min_position = 0
-        self.max_position = 1
+        self.max_position = 0
         self.entered = False
 
     def is_finished(self) -> bool:
@@ -51,8 +50,10 @@ class MainMenu(State):
         self.input.update()
 
         if self.entered:
+            # if self.position == 0:
+            #     switch_state(Prompter(Simulation(ctx.population, ctx.food_amount)))
             if self.position == 0:
-                switch_state(Prompter(Simulation()))
+                switch_state(Settings())
 
     def draw(self) -> None:
         Text.draw("Host Parasite Simulation", centerx=640, top=30, size=3)
@@ -60,8 +61,9 @@ class MainMenu(State):
         colors = ["white" for _ in range(self.max_position + 1)]
         colors[self.position] = "gold"
 
-        Text.draw("Simulation", centerx=650, top=300, color=colors[0])
+        # Text.draw("Simulation", centerx=650, top=300, color=colors[0])
+        Text.draw("Simulation Settings", centerx=650, top=300, color=colors[0])
 
-        x = 460
+        x = 350
         y = 305 + self.position * 50
         Text.draw("\u2192", (x, y), color="gold", size=2)
