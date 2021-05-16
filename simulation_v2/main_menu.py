@@ -33,7 +33,7 @@ class MainMenu(State):
         if self.position > self.max_position:
             self.position = self.max_position
         # else:
-            # ctx.mixer.play("change")
+        # ctx.mixer.play("change")
 
     def position_up(self) -> None:
         self.position -= 1

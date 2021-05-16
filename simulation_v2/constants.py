@@ -1,4 +1,5 @@
 import random
+
 import pygame
 
 WINDOW_SIZE_X = 1600
@@ -19,6 +20,7 @@ MAX_FOOD = 45
 MULTIPLICATION_THRESHOLD = 120
 
 INFECTED_FOOD_CHANCE = 0.4
+
 
 def get_per_second():
     return 1 / FPS

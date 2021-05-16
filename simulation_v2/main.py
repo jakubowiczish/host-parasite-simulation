@@ -3,14 +3,14 @@ import time
 import pygame as pg
 import pygame.freetype
 import pymunk as pm
+
 import ptext
 import resources
-
 from config import config
 from ctx import ctx
 from main_menu import MainMenu
-from text import Text
 from state import State
+from text import Text
 
 
 class Main:

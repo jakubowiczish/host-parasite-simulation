@@ -3,7 +3,7 @@ from typing import Callable
 import pygame as pg
 
 from config import config
-from constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, POPULATION, FOOD_INIT_NUMBER, random_x_in_board, \
+from constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, random_x_in_board, \
     random_y_in_board, get_per_second
 from ctx import ctx
 from food import Food
@@ -23,7 +23,8 @@ class Simulation(State):
         self.display_front = ctx.surface
         self.host_multiply = HostMultiplayer(self.display_front, self.space, None, None)
         self.hosts = [
-            Host(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None, self.host_multiply)
+            Host(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None,
+                 self.host_multiply)
             for i in range(population)
         ]
         for host in self.hosts:

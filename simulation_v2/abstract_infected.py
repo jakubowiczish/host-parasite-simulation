@@ -1,8 +1,8 @@
 import pygame
 import pymunk
 
-from parasite import Parasite
 from ctx import ctx
+from parasite import Parasite
 
 
 class AbstractInfected(object):

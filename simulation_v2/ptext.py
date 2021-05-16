@@ -7,7 +7,6 @@
 
 from __future__ import division, print_function
 
-from collections import namedtuple
 from math import ceil, cos, exp, radians, sin
 
 import pygame
