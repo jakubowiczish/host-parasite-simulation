@@ -20,6 +20,7 @@ class AbstractInfected(object):
         self.parasite = None
         self.color = color
         self.space = space
+        self.is_alive = True
         space.add(self.body, self.shape)
 
     def draw(self):

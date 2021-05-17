@@ -39,24 +39,18 @@ class Simulation(State):
         self.spawn_food = FoodSpawn(self.display_front, self.space, self.foods, self.hosts)
         self.hosts[0].catch_parasite()
         self.walls = [
-            Wall(self.space, (0, 0), (0, SIM_BOARD_SIZE_Y)),
-            Wall(self.space, (0, 0), (SIM_BOARD_SIZE_X, 0)),
-            Wall(self.space, (0, SIM_BOARD_SIZE_Y), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y)),
-            Wall(self.space, (SIM_BOARD_SIZE_X, 0), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y))
+            Wall(self.space, (20, 20), (20, SIM_BOARD_SIZE_Y)),
+            Wall(self.space, (20, 20), (SIM_BOARD_SIZE_X, 20)),
+            Wall(self.space, (20, SIM_BOARD_SIZE_Y), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y)),
+            Wall(self.space, (SIM_BOARD_SIZE_X, 20), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y))
         ]
-        self.stats = Stats()
-
         self.finished = False
         self.pause = False
 
     def draw_walls(self) -> None:
-        line_color = (48, 48, 48)
         border_color = (192, 192, 192)
-
-        pg.draw.line(ctx.surface, line_color, (0, 0), (0, SIM_BOARD_SIZE_Y), 20)
-        pg.draw.line(ctx.surface, line_color, (0, 0), (SIM_BOARD_SIZE_X, 0), 20)
-        pg.draw.line(ctx.surface, border_color, (0, SIM_BOARD_SIZE_Y), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y), 20 + 2)
-        pg.draw.line(ctx.surface, border_color, (SIM_BOARD_SIZE_X, 0), (SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y), 20 + 2)
+        for wall in self.walls:
+            pg.draw.line(ctx.surface, border_color, wall.p1, wall.p2, 20)
 
     def initialize(self) -> None:
         for host in self.hosts:
@@ -75,10 +69,24 @@ class Simulation(State):
     def pass_time(self):
         self.spawn_food.spawn_food_random()
 
-    def get_total_number_of_parasites(self) -> int:
+    def get_total_number_of_carriers(self) -> int:
         counter = 0
         for host in self.hosts:
             if host.has_parasite():
+                counter += 1
+        return counter
+
+    def get_total_number_of_hosts_alive(self) -> int:
+        counter = 0
+        for host in self.hosts:
+            if host.is_alive:
+                counter += 1
+        return counter
+
+    def get_total_number_of_hosts_dead(self) -> int:
+        counter = 0
+        for host in self.hosts:
+            if not host.is_alive:
                 counter += 1
         return counter
 
@@ -96,8 +104,9 @@ class Simulation(State):
         self.pass_time()
 
         Stats.draw(food_amount=len(self.foods),
-                   hosts_amount=len(self.hosts),
-                   parasites_amount=self.get_total_number_of_parasites())
+                   hosts_alive_amount=self.get_total_number_of_hosts_alive(),
+                   hosts_dead_amount=self.get_total_number_of_hosts_dead(),
+                   carriers_amount=self.get_total_number_of_carriers())
 
         ctx.display.blit(self.display_front, (0, 0))
         # pg.display.update()

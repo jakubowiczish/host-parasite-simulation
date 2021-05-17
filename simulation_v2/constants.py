@@ -3,12 +3,15 @@ import random
 import pygame
 
 WINDOW_SIZE_X = 1600
-WINDOW_SIZE_Y = 800
+WINDOW_SIZE_Y = 900
 SIM_BOARD_SIZE_X = 800
 SIM_BOARD_SIZE_Y = 800
 
+BOARD_START_X = 20
+BOARD_START_Y = 20
+
 STATS_X_POSITION = SIM_BOARD_SIZE_X + 300
-STATS_Y_POSITION = WINDOW_SIZE_Y / 3
+STATS_Y_POSITION = WINDOW_SIZE_Y / 4
 
 FPS = 60
 
@@ -40,8 +43,8 @@ def increment_handlers():
 
 
 def random_x_in_board():
-    return random.randint(0, SIM_BOARD_SIZE_X)
+    return random.randint(BOARD_START_X, SIM_BOARD_SIZE_X)
 
 
 def random_y_in_board():
-    return random.randint(0, SIM_BOARD_SIZE_Y)
+    return random.randint(BOARD_START_Y, SIM_BOARD_SIZE_Y)

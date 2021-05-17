@@ -33,6 +33,7 @@ class Host(AbstractInfected):
         self.body.velocity = 0, 0
         self.visual_range = 0
         self.color = (255, 0, 0)
+        self.is_alive = False
 
     def multiply(self) -> None:
         self.host_multiply.multiply_host(self)
