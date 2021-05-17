@@ -17,7 +17,7 @@ class Host(AbstractInfected):
         self.random_move()
         self.host_multiply = host_multiply
 
-    def pass_time(self):
+    def pass_time(self) -> None:
         if self.health > 0:
             self.health -= get_per_second()
             if self.health > MULTIPLICATION_THRESHOLD:
@@ -29,15 +29,15 @@ class Host(AbstractInfected):
         if self.parasite:
             self.health -= self.parasite.needs * get_per_second()
 
-    def die(self):
+    def die(self) -> None:
         self.body.velocity = 0, 0
         self.visual_range = 0
         self.color = (255, 0, 0)
 
-    def multiply(self):
+    def multiply(self) -> None:
         self.host_multiply.multiply_host(self)
 
-    def eat(self, space, arbiter, data):
+    def eat(self, space, arbiter, data) -> bool:
         food = data['food']
         foods = data['foods']
         if food in foods:
@@ -47,10 +47,10 @@ class Host(AbstractInfected):
                 self.catch_parasite()
         return False
 
-    def random_move(self):
+    def random_move(self) -> None:
         self.body.velocity = random.uniform(-100, 100), random.uniform(-100, 100)
 
-    def find_nearest_food(self, foods):
+    def find_nearest_food(self, foods) -> None:
         if self.health > 0:
             vector_to_food = random.uniform(-100, 100), random.uniform(-100, 100)
             if not foods:
@@ -66,7 +66,10 @@ class Host(AbstractInfected):
             if min_length < 10000000:
                 self.body.velocity = vector_to_food
 
-    def draw(self):
+    def draw(self) -> None:
         super().draw()
         x, y = self.body.position
         pygame.draw.circle(self.display_front, (255, 255, 255), (int(x), int(y)), self.visual_range)
+
+    def has_parasite(self) -> bool:
+        return self.parasite is not None

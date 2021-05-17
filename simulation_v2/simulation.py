@@ -75,6 +75,13 @@ class Simulation(State):
     def pass_time(self):
         self.spawn_food.spawn_food_random()
 
+    def get_total_number_of_parasites(self) -> int:
+        counter = 0
+        for host in self.hosts:
+            if host.has_parasite():
+                counter += 1
+        return counter
+
     def update(self, switch_state: Callable) -> None:
         ctx.surface.fill((0, 0, 0))
         self.display_front.fill((0, 0, 0))
@@ -87,8 +94,12 @@ class Simulation(State):
         for food in self.foods:
             food.draw()
         self.pass_time()
+
+        Stats.draw(food_amount=len(self.foods),
+                   hosts_amount=len(self.hosts),
+                   parasites_amount=self.get_total_number_of_parasites())
+
         ctx.display.blit(self.display_front, (0, 0))
-        self.stats.print_stats(f"There is {len(self.foods)} food ")
         # pg.display.update()
         # ctx.surface.update()
         # self.clock.tick(FPS)

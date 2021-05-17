@@ -1,15 +1,12 @@
-import pygame
-
-from constants import SIM_BOARD_SIZE_X
-from ctx import ctx
+from constants import STATS_Y_POSITION, STATS_X_POSITION
+from text import Text
 
 
 class Stats:
-    def __init__(self):
-        self.font = pygame.font.SysFont(None, 70)
 
-    def print_stats(self, text, x=SIM_BOARD_SIZE_X, y=100, color=(255, 255, 255)):
-        text_obj = self.font.render(text, True, color)
-        text_rect = text_obj.get_rect()
-        text_rect.topleft = (x, y)
-        ctx.display.blit(text_obj, text_rect)
+    @staticmethod
+    def draw(food_amount, parasites_amount, hosts_amount):
+        Text.draw(f"Food: {food_amount}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION, color="gold")
+        Text.draw(f"Parasites in hosts: {parasites_amount}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 100,
+                  color="gold")
+        Text.draw(f"Hosts: {hosts_amount}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 200, color="gold")
