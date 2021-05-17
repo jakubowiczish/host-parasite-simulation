@@ -10,6 +10,9 @@ from food import Food
 from food_spawn import FoodSpawn
 from host import Host
 from host_multiplayer import HostMultiplayer
+from sim_data_chunk import SimDataChunk
+from sim_data import sim_data
+from sim_plot import SimPlot
 from state import State
 from stats import Stats
 from wall import Wall
@@ -103,10 +106,20 @@ class Simulation(State):
             food.draw()
         self.pass_time()
 
-        Stats.draw(food_amount=len(self.foods),
-                   hosts_alive_amount=self.get_total_number_of_hosts_alive(),
-                   hosts_dead_amount=self.get_total_number_of_hosts_dead(),
-                   carriers_amount=self.get_total_number_of_carriers())
+        sim_data_chunk = SimDataChunk(
+            food=len(self.foods),
+            hosts_alive=self.get_total_number_of_hosts_alive(),
+            hosts_dead=self.get_total_number_of_hosts_dead(),
+            carriers=self.get_total_number_of_carriers(),
+            timestamp=ctx.now
+        )
+
+        if sim_data_chunk.hosts_alive == 0:
+            SimPlot.plot(sim_data.timestamps, sim_data.foods, "time", "food", "time_food", "time_food.jpeg")
+            self.finished = True
+
+        Stats.draw(sim_data_chunk)
+        sim_data.update(sim_data_chunk)
 
         ctx.display.blit(self.display_front, (0, 0))
         # pg.display.update()

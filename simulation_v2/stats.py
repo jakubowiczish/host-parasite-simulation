@@ -1,15 +1,16 @@
 from constants import STATS_Y_POSITION, STATS_X_POSITION
+from sim_data_chunk import SimDataChunk
 from text import Text
 
 
 class Stats:
 
     @staticmethod
-    def draw(food_amount, carriers_amount, hosts_alive_amount, hosts_dead_amount):
-        Text.draw(f"Food: {food_amount}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION, color="gold")
-        Text.draw(f"Carriers: {carriers_amount}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 100,
+    def draw(chunk: SimDataChunk):
+        Text.draw(f"Food: {chunk.food}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION, color="gold")
+        Text.draw(f"Carriers: {chunk.carriers}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 100,
                   color="gold")
-        Text.draw(f"Hosts alive: {hosts_alive_amount}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 200,
+        Text.draw(f"Hosts alive: {chunk.hosts_alive}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 200,
                   color="gold")
-        Text.draw(f"Hosts dead: {hosts_dead_amount}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 300,
+        Text.draw(f"Hosts dead: {chunk.hosts_dead}", centerx=STATS_X_POSITION, top=STATS_Y_POSITION + 300,
                   color="gold")
