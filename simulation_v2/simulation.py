@@ -1,7 +1,6 @@
 from typing import Callable
 
 import pygame as pg
-import time
 
 from config import config
 from constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, random_x_in_board, \
@@ -10,11 +9,10 @@ from ctx import ctx
 from food import Food
 from food_spawn import FoodSpawn
 from host import Host
-from host_multiplayer import HostMultiplayer
-from sim_data_chunk import SimDataChunk
+from host_multiplayer import HostMultiplier
 from sim_data import sim_data
+from sim_data_chunk import SimDataChunk
 from simulation_v2.sim_plot import SimPlot
-
 from state import State
 from stats import Stats
 from wall import Wall
@@ -22,22 +20,21 @@ from wall import Wall
 
 class Simulation(State):
 
-    def __init__(self, population, food_amount):
-        ctx.simulation_start_time=time.monotonic()
+    def __init__(self):
         pg.display.set_caption(config.window_title)
         self.space = ctx.space
         self.display_front = ctx.surface
-        self.host_multiply = HostMultiplayer(self.display_front, self.space, None, None)
+        self.host_multiply = HostMultiplier(self.display_front, self.space, None, None)
         self.hosts = [
             Host(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1, None,
                  self.host_multiply)
-            for i in range(population)
+            for i in range(ctx.population)
         ]
         for host in self.hosts:
             host.hosts = self.hosts
         self.foods = [
             Food(self.space, self.display_front, random_x_in_board(), random_y_in_board(), i + 1)
-            for i in range(population, population + food_amount)
+            for i in range(ctx.population, ctx.population + ctx.food_amount)
         ]
 
         self.host_multiply.hosts = self.hosts
@@ -108,7 +105,7 @@ class Simulation(State):
         for food in self.foods:
             food.draw()
         self.pass_time()
-        current_time = ctx.now-ctx.simulation_start_time
+        current_time = ctx.now - ctx.simulation_start_time
         sim_data_chunk = SimDataChunk(
             food=len(self.foods),
             hosts_alive=self.get_total_number_of_hosts_alive(),

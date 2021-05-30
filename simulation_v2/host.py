@@ -5,7 +5,8 @@ import pygame
 import pymunk
 
 from abstract_infected import AbstractInfected
-from constants import DIE_TYPE_COLLISION, get_per_second, MULTIPLICATION_THRESHOLD
+from constants import get_per_second, MULTIPLICATION_THRESHOLD
+from ctx import ctx
 
 
 class Host(AbstractInfected):
@@ -28,7 +29,7 @@ class Host(AbstractInfected):
                 self.health -= MULTIPLICATION_THRESHOLD / 2
                 self.multiply()
         else:
-            self.shape.collision_type = DIE_TYPE_COLLISION
+            self.shape.collision_type = ctx.die_type_collision
             self.die()
         if self.parasite:
             self.health -= self.parasite.needs * get_per_second()

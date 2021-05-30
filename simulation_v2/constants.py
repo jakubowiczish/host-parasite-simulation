@@ -1,6 +1,7 @@
 import random
 
 import pygame
+
 from ctx import ctx
 
 WINDOW_SIZE_X = 1600
@@ -16,17 +17,8 @@ STATS_Y_POSITION = WINDOW_SIZE_Y / 4
 
 FPS = 60
 
-POPULATION = 2
-FOOD_INIT_NUMBER = 40
-DIE_TYPE_COLLISION = POPULATION + FOOD_INIT_NUMBER + 1
-ALL_HANDLERS = DIE_TYPE_COLLISION + 1
-RECOVERY_TIME = 300  # dependent on fps
-FOOD_SPAWN_INTERVAL = 3
-
 MAX_FOOD = 45
 MULTIPLICATION_THRESHOLD = 120
-
-INFECTED_FOOD_CHANCE = 0.4
 
 
 def get_per_second():
@@ -38,9 +30,8 @@ def get_time_in_seconds():
 
 
 def increment_handlers():
-    global ALL_HANDLERS
-    ALL_HANDLERS += 1
-    return ALL_HANDLERS
+    ctx.all_handlers += 1
+    return ctx.all_handlers
 
 
 def random_x_in_board():

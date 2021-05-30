@@ -2,7 +2,7 @@ from constants import increment_handlers
 from host import Host
 
 
-class HostMultiplayer:
+class HostMultiplier:
     def __init__(self, display_front, space, foods, hosts):
         self.display_front = display_front
         self.space = space
