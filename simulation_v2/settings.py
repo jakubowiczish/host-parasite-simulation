@@ -19,7 +19,7 @@ class Settings(State):
         self.entered = False
         self.population = 2
         self.food_amount = 40
-        self.speedup = 3
+        self.speedup = 1
 
     def is_finished(self) -> bool:
         return False
