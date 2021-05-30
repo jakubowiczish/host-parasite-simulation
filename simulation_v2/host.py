@@ -19,6 +19,10 @@ class Host(AbstractInfected):
 
     def pass_time(self) -> None:
         if self.health > 0:
+            current_vector = self.body.velocity
+            current_speed = np.linalg.norm(current_vector)
+            if current_speed < self.speed:
+                self.random_move()
             self.health -= get_per_second()
             if self.health > MULTIPLICATION_THRESHOLD:
                 self.health -= MULTIPLICATION_THRESHOLD / 2
@@ -49,11 +53,17 @@ class Host(AbstractInfected):
         return False
 
     def random_move(self) -> None:
-        self.body.velocity = random.uniform(-100, 100), random.uniform(-100, 100)
+        self.body.velocity = self.random_vector()
+
+    def random_vector(self) -> list:
+        random_vector = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+        current_speed = np.linalg.norm(random_vector)
+        vector_speed = self.speed * random_vector / current_speed
+        return vector_speed.tolist()
 
     def find_nearest_food(self, foods) -> None:
         if self.health > 0:
-            vector_to_food = random.uniform(-100, 100), random.uniform(-100, 100)
+            vector_to_food = self.random_vector()
             if not foods:
                 return
             min_length = 10000000
