@@ -1,6 +1,7 @@
 from typing import Callable
 
 import pygame as pg
+import time
 
 from config import config
 from constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, random_x_in_board, \
@@ -21,6 +22,7 @@ from wall import Wall
 class Simulation(State):
 
     def __init__(self, population, food_amount):
+        ctx.simulation_start_time=time.monotonic()
         pg.display.set_caption(config.window_title)
         self.space = ctx.space
         self.display_front = ctx.surface
@@ -105,13 +107,13 @@ class Simulation(State):
         for food in self.foods:
             food.draw()
         self.pass_time()
-
+        current_time = ctx.now-ctx.simulation_start_time
         sim_data_chunk = SimDataChunk(
             food=len(self.foods),
             hosts_alive=self.get_total_number_of_hosts_alive(),
             hosts_dead=self.get_total_number_of_hosts_dead(),
             carriers=self.get_total_number_of_carriers(),
-            timestamp=ctx.now
+            timestamp=current_time
         )
 
         if sim_data_chunk.hosts_alive == 0:
