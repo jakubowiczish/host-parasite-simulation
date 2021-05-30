@@ -13,7 +13,8 @@ from host import Host
 from host_multiplayer import HostMultiplayer
 from sim_data_chunk import SimDataChunk
 from sim_data import sim_data
-from sim_plot import SimPlot
+from simulation_v2.sim_plot import SimPlot
+
 from state import State
 from stats import Stats
 from wall import Wall
@@ -117,7 +118,7 @@ class Simulation(State):
         )
 
         if sim_data_chunk.hosts_alive == 0:
-            SimPlot.plot_all()
+            SimPlot().plot_all()
             self.finished = True
 
         Stats.draw(sim_data_chunk)
