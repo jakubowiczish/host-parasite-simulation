@@ -1,6 +1,7 @@
 import random
 
 import pygame
+from ctx import ctx
 
 WINDOW_SIZE_X = 1600
 WINDOW_SIZE_Y = 900
@@ -14,7 +15,6 @@ STATS_X_POSITION = SIM_BOARD_SIZE_X + 300
 STATS_Y_POSITION = WINDOW_SIZE_Y / 4
 
 FPS = 60
-SPEEDUP = 3
 
 POPULATION = 2
 FOOD_INIT_NUMBER = 40
@@ -28,8 +28,9 @@ MULTIPLICATION_THRESHOLD = 120
 
 INFECTED_FOOD_CHANCE = 0.4
 
+
 def get_per_second():
-    return (1 / FPS) * SPEEDUP
+    return (1 / FPS) * ctx.speedup
 
 
 def get_time_in_seconds():

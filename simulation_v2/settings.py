@@ -15,10 +15,11 @@ class Settings(State):
         self.input = Input(Device(config.device))
         self.position = 0
         self.min_position = 0
-        self.max_position = 2
+        self.max_position = 3
         self.entered = False
         self.population = 2
         self.food_amount = 40
+        self.speedup = 3
 
     def is_finished(self) -> bool:
         return False
@@ -43,8 +44,6 @@ class Settings(State):
         self.position -= 1
         if self.position < self.min_position:
             self.position = self.min_position
-        # else:
-        #     ctx.mixer.play("change")
 
     def position_enter(self) -> None:
         self.entered = True
@@ -61,6 +60,10 @@ class Settings(State):
             self.food_amount += 1
             if self.food_amount < 0:
                 self.food_amount = 0
+        if self.position == 2:
+            self.speedup += 1
+            if self.speedup < 0:
+                self.speedup = 0
 
     def decrease(self) -> None:
         if self.position == 0:
@@ -71,27 +74,31 @@ class Settings(State):
             self.food_amount -= 1
             if self.food_amount < 0:
                 self.food_amount = 0
+        if self.position == 2:
+            self.speedup -= 1
+            if self.speedup < 1:
+                self.speedup = 1
 
     def update(self, switch_state: Callable) -> None:
         self.input.update()
 
         if self.entered:
-            # if self.position == 0:
-
-            if self.position == 2:
+            if self.position == 3:
                 ctx.population = self.population
                 ctx.food_amount = self.food_amount
+                ctx.speedup = self.speedup
                 switch_state(Prompter(Simulation(ctx.population, ctx.food_amount)))
 
     def draw(self) -> None:
         Text.draw("Settings", centerx=640, top=30, size=3)
 
-        colors = ["white" for _ in range(self.max_position + 1)]
+        colors = ["gold" for _ in range(self.max_position + 1)]
         colors[self.position] = "gold"
 
         Text.draw("Number of hosts {}".format(self.population), centerx=650, top=300, color=colors[0])
         Text.draw("Number of food {}".format(self.food_amount), centerx=650, top=350, color=colors[0])
-        Text.draw("Start simulation", centerx=650, top=400, color=colors[0])
+        Text.draw("Speedup {}".format(self.speedup), centerx=650, top=400, color=colors[0])
+        Text.draw("Start simulation", centerx=650, top=450, color=colors[0])
 
         x = 350
         y = 305 + self.position * 50

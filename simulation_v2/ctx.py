@@ -11,8 +11,10 @@ class Context:
         self.display: pg.display
         self.population: int
         self.food_amount: int
+        self.speedup: int
 
 
 ctx = Context()
 ctx.population = 2
 ctx.food_amount = 40
+ctx.speedup = 3
