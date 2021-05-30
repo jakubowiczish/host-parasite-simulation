@@ -75,7 +75,7 @@ class Simulation(State):
     def get_total_number_of_carriers(self) -> int:
         counter = 0
         for host in self.hosts:
-            if host.has_parasite():
+            if host.has_parasite() and host.is_alive:
                 counter += 1
         return counter
 
@@ -115,7 +115,7 @@ class Simulation(State):
         )
 
         if sim_data_chunk.hosts_alive == 0:
-            SimPlot.plot(sim_data.timestamps, sim_data.foods, "time", "food", "time_food", "time_food.jpeg")
+            SimPlot.plot_all()
             self.finished = True
 
         Stats.draw(sim_data_chunk)

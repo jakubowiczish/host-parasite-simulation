@@ -9,12 +9,8 @@ import resources
 from config import config
 from ctx import ctx
 from main_menu import MainMenu
-from simulation_v2.sim_plot import SimPlot
 from state import State
 from text import Text
-import matplotlib.pyplot as plt
-
-from sim_data import sim_data
 
 
 class Main:

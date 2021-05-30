@@ -1,7 +1,7 @@
 import random
 
 from constants import increment_handlers, random_x_in_board, random_y_in_board, FOOD_SPAWN_INTERVAL, \
-    get_time_in_seconds, MAX_FOOD, INFECTED_FOOD_CHANCE
+    get_time_in_seconds, MAX_FOOD, INFECTED_FOOD_CHANCE, SPEEDUP
 from food import Food
 
 
@@ -17,7 +17,7 @@ class FoodSpawn:
     def spawn_food_random(self):
         if len(self.foods) < MAX_FOOD:
             now = get_time_in_seconds()
-            if now - self.last >= self.cool_down:
+            if now - self.last >= self.cool_down / SPEEDUP:
                 self.last = now
                 self.spawn_food(random_x_in_board(), random_y_in_board())
 
