@@ -62,8 +62,8 @@ class Settings(State):
                 self.food_amount = 0
         if self.position == 2:
             self.speedup += 1
-            if self.speedup < 0:
-                self.speedup = 0
+            if self.speedup > 5:
+                self.speedup = 5
 
     def decrease(self) -> None:
         if self.position == 0:
