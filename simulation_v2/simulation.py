@@ -23,6 +23,7 @@ class Simulation(State):
     def __init__(self):
         pg.display.set_caption(config.window_title)
         self.space = ctx.space
+        self.prev_chunk = None
         self.display_front = ctx.surface
         self.host_multiply = HostMultiplier(self.display_front, self.space, None, None)
         self.hosts = [
@@ -79,6 +80,14 @@ class Simulation(State):
                 counter += 1
         return counter
 
+    def get_total_number_of_parasites(self) -> int:
+        counter = 0
+        for host in self.hosts:
+            if host.is_alive:
+                for parasite in host.parasite:
+                    counter += 1
+        return counter
+
     def get_total_number_of_hosts_alive(self) -> int:
         counter = 0
         for host in self.hosts:
@@ -111,15 +120,18 @@ class Simulation(State):
             hosts_alive=self.get_total_number_of_hosts_alive(),
             hosts_dead=self.get_total_number_of_hosts_dead(),
             carriers=self.get_total_number_of_carriers(),
+            parasites=self.get_total_number_of_parasites(),
             timestamp=current_time
         )
+        if sim_data_chunk != self.prev_chunk:
+            sim_data.update(sim_data_chunk)
+            self.prev_chunk = sim_data_chunk
 
         if sim_data_chunk.hosts_alive == 0:
             SimPlot().plot_all()
             self.finished = True
 
         Stats.draw(sim_data_chunk)
-        sim_data.update(sim_data_chunk)
 
         ctx.display.blit(self.display_front, (0, 0))
         # pg.display.update()

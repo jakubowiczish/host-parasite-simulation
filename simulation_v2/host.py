@@ -32,7 +32,8 @@ class Host(AbstractInfected):
             self.shape.collision_type = ctx.die_type_collision
             self.die()
         if self.parasite:
-            self.health -= self.parasite.needs * get_per_second()
+            for parasite in self.parasite:
+                self.health -= parasite.needs * get_per_second()
 
     def die(self) -> None:
         self.body.velocity = 0, 0
@@ -84,4 +85,4 @@ class Host(AbstractInfected):
         pygame.draw.circle(self.display_front, (255, 255, 255), (int(x), int(y)), self.visual_range)
 
     def has_parasite(self) -> bool:
-        return self.parasite is not None
+        return len(self.parasite) != 0

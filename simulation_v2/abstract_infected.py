@@ -17,7 +17,7 @@ class AbstractInfected(object):
         self.shape.elasticity = 1
         self.shape.collision_type = i
         self.health = 100
-        self.parasite = None
+        self.parasite = []
         self.color = color
         self.space = space
         self.is_alive = True
@@ -29,4 +29,4 @@ class AbstractInfected(object):
 
     def catch_parasite(self):
         self.color = (self.color[0], self.color[1], 100)
-        self.parasite = Parasite()
+        self.parasite.append(Parasite())
