@@ -11,7 +11,7 @@ from ctx import ctx
 
 class Host(AbstractInfected):
     def __init__(self, space, display_front, x, y, i, hosts, host_multiply):
-        super().__init__(space, display_front, x, y, i, pymunk.Body(), 10, (255, 255, 255))
+        super().__init__(space, display_front, x, y, i, pymunk.Body(), 2, (255, 255, 255))
         self.hosts = hosts
         self.speed = 80
         self.visual_range = 50

@@ -17,6 +17,7 @@ class AbstractInfected(object):
         self.shape.elasticity = 1
         self.shape.collision_type = i
         self.health = 100
+        self.size = size
         self.parasite = []
         self.color = color
         self.space = space
@@ -25,7 +26,7 @@ class AbstractInfected(object):
 
     def draw(self):
         x, y = self.body.position
-        pygame.draw.circle(ctx.display, self.color, (int(x), int(y)), 10)
+        pygame.draw.circle(ctx.display, self.color, (int(x), int(y)), self.size)
 
     def catch_parasite(self):
         self.color = (self.color[0], self.color[1], 100)
