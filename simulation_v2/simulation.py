@@ -4,7 +4,7 @@ import pygame as pg
 
 from config import config
 from constants import SIM_BOARD_SIZE_X, SIM_BOARD_SIZE_Y, random_x_in_board, \
-    random_y_in_board, get_per_second
+    random_y_in_board, get_per_second, MULTIPLICATION_THRESHOLD
 from ctx import ctx
 from food import Food
 from food_spawn import FoodSpawn
@@ -16,7 +16,7 @@ from simulation_v2.sim_plot import SimPlot
 from state import State
 from stats import Stats
 from wall import Wall
-
+import math
 
 class Simulation(State):
 
@@ -41,7 +41,6 @@ class Simulation(State):
         self.host_multiply.hosts = self.hosts
         self.host_multiply.foods = self.foods
         self.spawn_food = FoodSpawn(self.display_front, self.space, self.foods, self.hosts)
-        self.hosts[0].catch_parasite()
         self.walls = [
             Wall(self.space, (20, 20), (20, SIM_BOARD_SIZE_Y)),
             Wall(self.space, (20, 20), (SIM_BOARD_SIZE_X, 20)),
@@ -58,6 +57,13 @@ class Simulation(State):
 
     def initialize(self) -> None:
         for host in self.hosts:
+            other_hosts = filter(lambda x: x != host, self.hosts)
+            for other_host in other_hosts:
+                handler_host = self.space.add_collision_handler(host.shape.collision_type, other_host.shape.collision_type)
+                handler_host.begin = host.multiply
+                other_handler = self.space.add_collision_handler(other_host.shape.collision_type,
+                                                                 host.shape.collision_type)
+                other_handler.begin = other_host.multiply
             for food in self.foods:
                 handler = self.space.add_collision_handler(host.shape.collision_type, food.shape.collision_type)
                 handler.data['food'] = food
@@ -108,7 +114,13 @@ class Simulation(State):
         self.display_front.set_alpha(128)
 
         for host in self.hosts:
-            host.find_nearest_food(self.foods)
+            other_hosts = filter(lambda x: x != host and x.is_alive and host.is_alive, self.hosts)
+            if host.health > MULTIPLICATION_THRESHOLD:
+                target = host.find_nearest(list(other_hosts))
+                if target is None:
+                    host.find_nearest(self.foods)
+            else:
+                host.find_nearest(self.foods)
             host.draw()
             host.pass_time()
         for food in self.foods:

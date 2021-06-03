@@ -19,7 +19,7 @@ class Settings(State):
         self.max_position = 6
 
         self.population = 2
-        self.food_amount = 40
+        self.food_amount = 100
 
         self.min_speedup = 1
         self.speedup = 1
