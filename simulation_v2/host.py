@@ -36,8 +36,7 @@ class Host(AbstractInfected):
 
     def pass_time(self) -> None:
         if self.body.position.x > SIM_BOARD_SIZE_X or self.body.position.y > SIM_BOARD_SIZE_Y:
-            self.body.position.x = random_x_in_board()
-            self.body.position.y = random_y_in_board()
+            self.body.position = random_x_in_board(), random_y_in_board()
         if self.health > 0:
             current_vector = self.body.velocity
             current_speed = np.linalg.norm(current_vector)
