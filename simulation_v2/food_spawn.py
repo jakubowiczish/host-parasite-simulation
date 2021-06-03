@@ -19,7 +19,8 @@ class FoodSpawn:
             now = get_time_in_seconds()
             if now - self.last >= self.cool_down / ctx.speedup:
                 self.last = now
-                self.spawn_food(random_x_in_board(), random_y_in_board())
+                for _ in range(ctx.food_amount_per_simulation_step):
+                    self.spawn_food(random_x_in_board(), random_y_in_board())
 
     def spawn_food(self, x, y):
         handler_index = increment_handlers()

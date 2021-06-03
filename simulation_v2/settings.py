@@ -16,7 +16,7 @@ class Settings(State):
         self.entered = False
         self.min_position = 0
         self.position = 0
-        self.max_position = 5
+        self.max_position = 6
 
         self.population = 2
         self.food_amount = 40
@@ -25,13 +25,17 @@ class Settings(State):
         self.speedup = 1
         self.max_speedup = 5
 
-        self.min_food_spawn_interval = 0.5
+        self.min_food_spawn_interval = 0.1
         self.food_spawn_interval = 3
         self.max_food_spawn_interval = 5
 
         self.min_infected_food_chance = 0.1
         self.infected_food_chance = 0.4
         self.max_infected_food_chance = 0.9
+
+        self.min_food_amount_per_simulation_step = 0
+        self.food_amount_per_simulation_step = 1
+        self.max_food_amount_per_simulation_step = 20
 
     def is_finished(self) -> bool:
         return False
@@ -84,6 +88,10 @@ class Settings(State):
             self.infected_food_chance += 0.1
             if self.infected_food_chance > self.max_infected_food_chance:
                 self.infected_food_chance = self.max_infected_food_chance
+        if self.position == 5:
+            self.food_amount_per_simulation_step += 1
+            if self.food_amount_per_simulation_step > self.max_food_amount_per_simulation_step:
+                self.food_amount_per_simulation_step = self.max_food_amount_per_simulation_step
 
     def decrease(self) -> None:
         if self.position == 0:
@@ -106,6 +114,10 @@ class Settings(State):
             self.infected_food_chance -= 0.1
             if self.infected_food_chance < self.min_infected_food_chance:
                 self.infected_food_chance = self.min_infected_food_chance
+        if self.position == 5:
+            self.food_amount_per_simulation_step -= 1
+            if self.food_amount_per_simulation_step < self.min_food_amount_per_simulation_step:
+                self.food_amount_per_simulation_step = self.min_food_amount_per_simulation_step
 
     def update(self, switch_state: Callable) -> None:
         self.input.update()
@@ -117,7 +129,8 @@ class Settings(State):
                     food_amount=self.food_amount,
                     speedup=self.speedup,
                     food_spawn_interval=self.food_spawn_interval,
-                    infected_food_chance=self.infected_food_chance
+                    infected_food_chance=self.infected_food_chance,
+                    food_amount_per_simultion_step=self.food_amount_per_simulation_step
                 )
                 switch_state(Prompter(Simulation()))
 
@@ -128,15 +141,17 @@ class Settings(State):
         colors[self.position] = "gold"
 
         text_x = 650
-        Text.draw("Number of hosts {}".format(self.population), centerx=text_x, top=300, color=colors[0])
-        Text.draw("Number of food {}".format(self.food_amount), centerx=text_x, top=350, color=colors[0])
-        Text.draw("Simulation speedup {}".format(self.speedup), centerx=text_x, top=400, color=colors[0])
-        Text.draw("Food spawn interval {:.1f}".format(self.food_spawn_interval), centerx=text_x, top=450,
+        Text.draw("Number of hosts: {}".format(self.population), centerx=text_x, top=300, color=colors[0])
+        Text.draw("Number of food: {}".format(self.food_amount), centerx=text_x, top=350, color=colors[0])
+        Text.draw("Simulation speedup: {}".format(self.speedup), centerx=text_x, top=400, color=colors[0])
+        Text.draw("Food spawn interval: {:.1f}".format(self.food_spawn_interval), centerx=text_x, top=450,
                   color=colors[0])
-        Text.draw("Infected food chance {:.1f}".format(self.infected_food_chance), centerx=text_x, top=500,
+        Text.draw("Infected food chance: {:.1f}".format(self.infected_food_chance), centerx=text_x, top=500,
                   color=colors[0])
-        Text.draw("Start simulation", centerx=text_x, top=550, color=colors[0])
+        Text.draw("Food amount per simulation step: {}".format(self.food_amount_per_simulation_step), centerx=text_x,
+                  top=550, color=colors[0])
+        Text.draw("Start simulation", centerx=text_x, top=600, color=colors[0])
 
-        arrow_x = 350
+        arrow_x = 150
         arrow_y = 305 + self.position * 50
         Text.draw("\u2192", (arrow_x, arrow_y), color="gold", size=2)
