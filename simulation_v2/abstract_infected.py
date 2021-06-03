@@ -6,7 +6,7 @@ from parasite import Parasite
 
 
 class AbstractInfected(object):
-    def __init__(self, space, display_front, x, y, i, body, size, color):
+    def __init__(self, space, display_front, x, y, i, body, size, color, health=100):
         self.display_front = display_front
         self.x = x
         self.y = y
@@ -16,7 +16,7 @@ class AbstractInfected(object):
         self.shape.density = 1
         self.shape.elasticity = 1
         self.shape.collision_type = i
-        self.health = 100
+        self.health = health
         self.size = size
         self.parasite = []
         self.color = color

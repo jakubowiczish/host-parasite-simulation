@@ -112,6 +112,10 @@ class Simulation(State):
         ctx.surface.fill((0, 0, 0))
         self.display_front.fill((0, 0, 0))
         self.display_front.set_alpha(128)
+        keys = pg.key.get_pressed()
+        if keys[pg.K_k]:
+            for host in self.hosts:
+                host.die()
 
         for host in self.hosts:
             other_hosts = filter(lambda x: x != host and x.is_alive and host.is_alive, self.hosts)

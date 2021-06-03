@@ -1,4 +1,4 @@
-from constants import increment_handlers
+from constants import increment_handlers, SIM_BOARD_SIZE_Y, SIM_BOARD_SIZE_X
 from host import Host
 
 
@@ -10,9 +10,15 @@ class HostMultiplier:
         self.hosts = hosts
 
     def multiply_host(self, host):
-        offset = 5
-        new_host = Host(self.space, self.display_front, host.body.position.x + offset,
-                        host.body.position.y + offset, increment_handlers(), self.hosts, self)
+        offset_y = host.size * 3
+        offset_x = host.size * 3
+        if host.body.position.y + offset_y >= SIM_BOARD_SIZE_Y:
+            offset_y = offset_y * -1
+        if host.body.position.x >= SIM_BOARD_SIZE_X:
+            offset_x = offset_x * -1
+
+        new_host = Host(self.space, self.display_front, host.body.position.x + offset_x,
+                        host.body.position.y + offset_y, increment_handlers(), self.hosts, self, health=80)
 
         for other_host in self.hosts:
             handler_host2 = self.space.add_collision_handler(new_host.shape.collision_type,

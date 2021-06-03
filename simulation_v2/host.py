@@ -5,7 +5,8 @@ import pygame
 import pymunk
 import sys
 from abstract_infected import AbstractInfected
-from constants import get_per_second, MULTIPLICATION_THRESHOLD
+from constants import get_per_second, MULTIPLICATION_THRESHOLD, SIM_BOARD_SIZE_Y, SIM_BOARD_SIZE_X, random_x_in_board, \
+    random_y_in_board
 from ctx import ctx
 
 thismodule = sys.modules[__name__]
@@ -17,8 +18,8 @@ def update_foo():
 
 
 class Host(AbstractInfected):
-    def __init__(self, space, display_front, x, y, i, hosts, host_multiply):
-        super().__init__(space, display_front, x, y, i, pymunk.Body(), 4, (255, 255, 255))
+    def __init__(self, space, display_front, x, y, i, hosts, host_multiply, health=100):
+        super().__init__(space, display_front, x, y, i, pymunk.Body(), 4, (255, 255, 255), health=health)
         self.hosts = hosts
         self.speed = 80
         self.visual_range = 50
@@ -34,6 +35,9 @@ class Host(AbstractInfected):
         return not self.__eq__(other)
 
     def pass_time(self) -> None:
+        if self.body.position.x > SIM_BOARD_SIZE_X or self.body.position.y > SIM_BOARD_SIZE_Y:
+            self.body.position.x = random_x_in_board()
+            self.body.position.y = random_y_in_board()
         if self.health > 0:
             current_vector = self.body.velocity
             current_speed = np.linalg.norm(current_vector)
@@ -91,7 +95,10 @@ class Host(AbstractInfected):
             for target in targets:
                 if hasattr(target, "speed"):
                     speed_boost = 1.5
-                    vector = np.array([target.body.position.x - self.body.position.x, target.body.position.y - self.body.position.y])
+                    vector = np.array(
+                        [target.body.position.x - self.body.position.x, target.body.position.y - self.body.position.y])
+                    if np.linalg.norm(vector) < 0.5:
+                        self.multiply(None, None, None)
                 else:
                     vector = np.array([target.x - self.body.position.x, target.y - self.body.position.y])
                 length = np.linalg.norm(vector)
