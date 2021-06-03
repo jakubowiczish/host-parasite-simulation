@@ -22,7 +22,8 @@ class Context:
         self.food_amount_per_simulation_step: int
 
     @staticmethod
-    def re_init(population, food_amount, speedup, food_spawn_interval, infected_food_chance, food_amount_per_simultion_step) -> None:
+    def re_init(population, food_amount, speedup, food_spawn_interval, infected_food_chance,
+                food_amount_per_simultion_step) -> None:
         ctx.running = True
         ctx.simulation_start_time = time.monotonic()
         ctx.population = population
@@ -33,6 +34,12 @@ class Context:
         ctx.infected_food_chance = infected_food_chance
         ctx.all_handlers = ctx.die_type_collision + 1
         ctx.food_amount_per_simulation_step = food_amount_per_simultion_step
+
+    def __str__(self) -> str:
+        return f"\nPoczątkowa populacja: {ctx.population}\nPoczątkowa ilość pożywienia: {ctx.food_amount} z szansą na zainfekowanie równą: {ctx.infected_food_chance:.1f}"
+
+    def get_description(self) -> str:
+        return f"pop_{ctx.population}_food_{ctx.food_amount}_inf-chance_{ctx.infected_food_chance:.1f}"
 
 
 ctx = Context()
