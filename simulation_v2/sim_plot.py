@@ -16,10 +16,10 @@ def plot_on_thread():
             f"time_food_{description}.png", ["Pożywienie"]]
     carriers = [sim_data.timestamps, sim_data.carriers, "Czas [s]", "Liczba nosicieli",
                 f"Zmiana liczby nosicieli w czasie\n{ctx}", f"time_carriers_{description}.png", ["Nosiciele"]]
-    SimPlot.plot_sub_plot(sim_data.timestamps, (sim_data.hosts_alive, sim_data.parasites), "Czas [s]",
+    SimPlot.plot_sub_plot(sim_data.timestamps, (sim_data.hosts_alive, sim_data.parasites, sim_data.foods), "Czas [s]",
                           "Liczba żywicieli",
                           f"Populacja żywicieli w czasie {ctx}",
-                          f"time_hosts_alive_{description}.png", ["Żywiciele", "Pasożyty"])
+                          f"time_hosts_alive_{description}.png", ["Żywiciele", "Pasożyty", "Pożywienie"])
     pool.starmap(SimPlot.plot, [host_dead, food, carriers])
 
 
@@ -47,9 +47,10 @@ class SimPlot:
 
     @staticmethod
     def plot_sub_plot(xs, ys, xlabel, ylabel, title, file_name, legend):
-        host, parasite = ys
+        host, parasite, food = ys
         plot_gen(xs, host, xlabel, ylabel, title)
         plt.plot(xs, parasite, linestyle='--', marker='o')
+        plt.plot(xs, food, linestyle='--', marker='o')
         plt.legend(legend)
         plt.savefig(f'plt/{file_name}')
         plt.show()
