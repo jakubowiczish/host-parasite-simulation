@@ -18,5 +18,11 @@ class SimData:
         self.timestamps.append(plot_data_chunk.timestamp)
         self.parasites.append(plot_data_chunk.parasites)
 
+    def export_to_file(self, name):
+        f = open(f"results/results_{name}.csv", "w")
+        for i in range(len(self.foods)):
+            f.write(f"{self.foods[i]};{self.carriers[i]};{self.hosts_alive[i]};{self.hosts_dead[i]};{self.timestamps[i]};{self.parasites[i]}\n")
+        f.close()
+
 
 sim_data = SimData()

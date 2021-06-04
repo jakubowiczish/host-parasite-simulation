@@ -20,6 +20,7 @@ def plot_on_thread():
                           "Liczba żywicieli",
                           f"Populacja żywicieli w czasie {ctx}",
                           f"time_hosts_alive_{description}.png", ["Żywiciele", "Pasożyty", "Pożywienie"])
+    sim_data.export_to_file(description)
     pool.starmap(SimPlot.plot, [host_dead, food, carriers])
 
 
