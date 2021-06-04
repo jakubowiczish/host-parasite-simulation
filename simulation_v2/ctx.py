@@ -36,10 +36,12 @@ class Context:
         ctx.food_amount_per_simulation_step = food_amount_per_simultion_step
 
     def __str__(self) -> str:
-        return f"\nPoczątkowa populacja: {ctx.population}\nPoczątkowa ilość pożywienia: {ctx.food_amount} z szansą na zainfekowanie równą: {ctx.infected_food_chance:.1f}"
+        return f"\nPoczątkowa populacja: {ctx.population}" \
+               f"\nPoczątkowa ilość pożywienia: {ctx.food_amount} z szansą na zainfekowanie równą: {ctx.infected_food_chance:.1f}" \
+               f"\nOkres pojawiania się nowego pożywienia: {ctx.food_spawn_interval:.1f} s z ilością pożywienia równą: {ctx.food_amount_per_simulation_step}"
 
     def get_description(self) -> str:
-        return f"pop_{ctx.population}_food_{ctx.food_amount}_inf-chance_{ctx.infected_food_chance:.1f}"
+        return f"pop_{ctx.population}_food_{ctx.food_amount}_inf-chance_{ctx.infected_food_chance:.1f}_inter_{ctx.food_spawn_interval:.1f}_step_{ctx.food_amount_per_simulation_step}"
 
 
 ctx = Context()
