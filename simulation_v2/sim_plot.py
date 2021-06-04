@@ -24,7 +24,7 @@ def plot_on_thread():
 
 
 def plot_gen(xs, ys, xlabel, ylabel, title):
-    plt.figure(figsize=(18, 12))
+    plt.figure(figsize=(18, 15))
     plt.style.use('ggplot')
     plt.grid(linestyle='dashdot', linewidth=2)
     plt.plot(xs, ys, linestyle='--', marker='o')
